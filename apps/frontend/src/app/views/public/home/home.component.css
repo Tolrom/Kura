@@ -1,0 +1,24 @@
+#page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+article {
+    width: 60svw;
+    background-color: #F5F5F5;
+    padding: 1em;
+    border-radius: 1em;
+    margin-bottom: 2em;
+}
+img {
+    max-width: 10svw;
+    margin: 2svw;
+}
+li {
+    list-style: disc;
+    margin-left: 2em;
+}
+#identification {
+    display: flex;
+    gap: 2em;
+}
