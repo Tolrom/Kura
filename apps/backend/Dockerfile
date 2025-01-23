@@ -12,13 +12,17 @@ ENV PORT=3000
 WORKDIR /app
 
 RUN addgroup --system backend && \
-          adduser --system -G backend backend
+    adduser --system -G backend backend
 
-COPY dist/apps/backend backend/
+COPY dist/apps/backend /app/backend/
+COPY apps/backend/project.json /app/backend/project.json
+COPY package.json .
+COPY nx.json .
+COPY tsconfig.base.json .
 RUN chown -R backend:backend .
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
-RUN npm --prefix backend --omit=dev -f install
+RUN npm install
 
-CMD [ "node", "backend" ]
+CMD [ "npx", "nx", "serve", "backend" ]

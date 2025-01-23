@@ -3,15 +3,16 @@ const { join } = require('path');
 
 module.exports = {
   output: {
+    filename: 'main.js',
     path: join(__dirname, '../../dist/apps/backend'),
   },
   plugins: [
     new NxAppWebpackPlugin({
       target: 'node',
       compiler: 'tsc',
-      main: './src/main.ts',
+      main: './main.ts',
       tsConfig: './tsconfig.app.json',
-      assets: ["./src/assets"],
+      assets: ["./assets"],
       optimization: false,
       outputHashing: 'none',
       generatePackageJson: true,

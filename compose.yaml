@@ -1,0 +1,51 @@
+services:
+  frontend:
+    build: 
+      dockerfile: apps/frontend/Dockerfile
+      context: .
+    ports:
+      - "4200:4200" # Port exposé pour Angular
+    command: npx nx serve frontend  # Assure le démarrage via Nx
+    depends_on:
+      - backend
+    networks:
+      - kura-network
+
+  backend:
+    build: 
+      dockerfile: apps/backend/Dockerfile
+      context: .
+    ports:
+      - "3000:3000" # Port exposé pour NestJS
+    command: npx nx serve backend  # Assure le démarrage via Nx
+    environment:
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME}
+    depends_on:
+      - db
+    networks:
+      - kura-network
+
+  db:
+    image: mysql:8.0 # Image MySQL
+    container_name: kura-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - kura-network
+
+networks:
+  kura-network:
+    driver: bridge
+
+volumes:
+  db_data:

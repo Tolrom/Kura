@@ -52,6 +52,12 @@
     }
   ],
   "targetDefaults": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "options": {
+        "generatePackageJson": true
+      }
+    },
     "@angular-devkit/build-angular:application": {
       "cache": true,
       "dependsOn": ["^build"],
@@ -67,6 +73,9 @@
       "linter": "eslint",
       "style": "css",
       "unitTestRunner": "jest"
+    },
+    "@nx/angular:component": {
+      "style": "css"
     }
   }
 }
