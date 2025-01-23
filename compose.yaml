@@ -1,11 +1,10 @@
 services:
   frontend:
     build: 
-      dockerfile: apps/frontend/Dockerfile
+      dockerfile: docker/frontend.Dockerfile
       context: .
     ports:
-      - "4200:4200" # Port exposé pour Angular
-    command: npx nx serve frontend  # Assure le démarrage via Nx
+      - "4200:80"
     depends_on:
       - backend
     networks:
@@ -13,11 +12,10 @@ services:
 
   backend:
     build: 
-      dockerfile: apps/backend/Dockerfile
+      dockerfile: docker/backend.Dockerfile
       context: .
     ports:
-      - "3000:3000" # Port exposé pour NestJS
-    command: npx nx serve backend  # Assure le démarrage via Nx
+      - "3000:3000"
     environment:
       DATABASE_HOST: ${DATABASE_HOST}
       DATABASE_PORT: ${DATABASE_PORT}
