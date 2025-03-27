@@ -1,12 +1,20 @@
-import { Entity, ManyToOne } from 'typeorm';
-import { Game } from './game.entity';
+import { Entity, ManyToOne, JoinColumn, PrimaryColumn } from 'typeorm';
+import { Game } from '../../game/entities/game.entity';
 import { Genre } from './genre.entity';
 
-@Entity()
+@Entity('belong')
 export class Belong {
-  @ManyToOne(() => Game)
-  game: Game;
+    @PrimaryColumn({ name: 'game_id' })
+    gameId: number;
 
-  @ManyToOne(() => Genre)
-  genre: Genre;
+    @PrimaryColumn({ name: 'genre_id' })
+    genreId: number;
+
+    @ManyToOne(() => Game, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'game_id' })
+    game: Game;
+
+    @ManyToOne(() => Genre, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'genre_id' })
+    genre: Genre;
 }

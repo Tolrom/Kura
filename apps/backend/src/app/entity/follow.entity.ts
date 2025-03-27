@@ -1,14 +1,22 @@
-import { Entity, Column, ManyToOne } from 'typeorm';
-import { User } from './user.entity';
+import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { User } from '../../user/entities/user.entity';
 
-@Entity()
+@Entity('follow')
 export class Follow {
-  @ManyToOne(() => User)
-  user: User;
+    @PrimaryColumn({ name: 'user_id' })
+    userId: number;
 
-  @ManyToOne(() => User)
-  user_1: User;
+    @PrimaryColumn({ name: 'user_id_1' })
+    followerId: number;
 
-  @Column({ type: 'datetime' })
-  date_followed: Date;
+    @Column({ name: 'date_followed', type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+    dateFollowed: Date;
+
+    @ManyToOne(() => User, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'user_id' })
+    followed: User;
+
+    @ManyToOne(() => User, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'user_id_1' })
+    follower: User;
 }

@@ -2,9 +2,18 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config'
+import { UserModule } from '../user/user.module';
+import { Game } from '../game/entities/game.entity';
+import { GameModule } from '../game/game.module';
+import { PlatformModule } from '../platform/platform.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: ['.env'],
+      isGlobal: true
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
@@ -13,10 +22,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
-      synchronize: true, // Désactiver en prod
+      synchronize: process.env.ENV == 'dev' ? true : false, 
     }),
+    UserModule,
+    GameModule,
+    PlatformModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+  
+export class AppModule {
+  
+}
